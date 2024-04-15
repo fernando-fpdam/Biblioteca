@@ -119,9 +119,9 @@ public class main {
 					for (Libro li : libros) {
 						System.out.println("Titulo: "                 + li.getTitulo()           +
 										   "\n\tID: "                 + li.getIdLibro()          +
-										   "\n\tAutor: "              + li.getAutor()           +
+										   "\n\tAutor: "              + li.getAutor()            +
 										   "\n\tAño de publicación: " + li.getPublication_year() +
-										   "\n\t¿Disponible?: "       + li.isDisponible());		
+										   "\n\t¿Disponible?: "       + li.isDisponible()        + "\n");		
 					}
 					break;
 					
@@ -137,7 +137,7 @@ public class main {
 						System.out.println("Nombre: "         + le.getNombre()   +"   " + "Apellido: "  + le.getApellido() +
 								           "\n\tID: "         + le.getIdLector() +
 								           "\n\tEmail: "      + le.getEmail()    +
-								           "\n\tEdad: "       + le.getEdad());		
+								           "\n\tEdad: "       + le.getEdad()     + "\n");		
 					}
 					break;
 				
