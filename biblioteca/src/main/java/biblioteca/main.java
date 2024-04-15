@@ -56,24 +56,20 @@ public class main {
 					System.out.println("     Añadir un nuevo libro      ");
 					System.out.println("--------------------------------");
 					System.out.println("Escriba los siguientes datos:");
-					System.out.print("Titulo:");
-					
+					System.out.print("Titulo: ");
 					String titulo = sc.next();
 					sc.nextLine();
-					System.out.print("Autor:");
+					System.out.print("Autor: ");
 					String autor = sc.next();
 					sc.nextLine();
-					System.out.print("Año de publicación:");
+					System.out.print("Año de publicación: ");
 					int publication_year = sc.nextInt();
 					sc.nextLine();
 					
 					
 					// Transación a la base de datos. 
 					Transaction tx = session.beginTransaction();
-					Libro libro = new Libro();
-					libro.setTitulo(titulo);
-					libro.setAutor(autor);
-					libro.setPublication_year(publication_year);
+					Libro libro = new Libro(titulo,autor,publication_year);
 					session.save(libro);
 					tx.commit();				
 					break;	
@@ -85,16 +81,16 @@ public class main {
 					System.out.println("--------------------------------");
 					System.out.println("Escriba los siguientes datos:");
 					
-					System.out.print("Nombre:");
+					System.out.print("Nombre: ");
 					String nombre = sc.next();
 					sc.nextLine();
-					System.out.println("Apellido:");
+					System.out.println("Apellido: ");
 					String apellido = sc.next();
 					sc.nextLine();
-					System.out.println("Email:");
+					System.out.println("Email: ");
 					String email = sc.next();
 					sc.nextLine();
-					System.out.println("Edad:");
+					System.out.println("Edad: ");
 					int edad = sc.nextInt();
 					
 					// Transación a la base de datos.

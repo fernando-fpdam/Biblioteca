@@ -15,14 +15,24 @@ public class Libro {
 	
 	}
 
-	public Libro(int idLibro, String titulo, String autor, int publication_year) {
+	public Libro(int idLibro, String titulo, String autor, int publication_year , boolean disponible) {
 		super();
 		this.idLibro = idLibro;
 		this.titulo = titulo;
 		this.autor = autor;
 		this.publication_year = publication_year;
+		this.disponible = disponible; 
+	}
+	
+	public Libro(String titulo, String autor, int publication_year) {
+		super();
+		this.titulo = titulo;
+		this.autor = autor;
+		this.publication_year = publication_year;
 		this.disponible = true; // Cuando se añade un nuevo libro, lo declaramos por defecto como disponible.
 	}
+	
+	
 
 // GETTERS AND SETTERS. 
 	
