@@ -7,6 +7,7 @@ import java.util.InputMismatchException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Date;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -31,136 +32,220 @@ public class main {
 	// PROGRAMA PRINCIPAL.
 		int opcion = 0;
 		Scanner sc = new Scanner(System.in);
-		
-		
-		while (opcion !=7) {
+		Transaction tx = session.beginTransaction();
+	
+		while (opcion !=4) {
 			System.out.println("--------------------------------");
 			System.out.println("           BIBLIOTECA           ");
 			System.out.println("--------------------------------");
-			System.out.println("1- Insertar Libro.");
-			System.out.println("2- Insertar Lector.");
-			System.out.println("3- Listado de Libros.");
-			System.out.println("4- Listado de Lectores.");
-			System.out.println("5- Ver Libro por ID.");
-			System.out.println("6- Ver Lector por ID.");
-			System.out.println("7- Salir.");
+			System.out.println("1. Libros.");
+			System.out.println("2. Lectores.");
+			System.out.println("3. Prestamos.");
+			System.out.println("4. Salir.");
 			System.out.println("--------------------------------");
 			System.out.println("selecciona una opción:");
 			opcion = sc.nextInt();
-			
 			try {
 				switch (opcion) {
-				case 1: // 1. Insertar Libro.
-					// Solicitud de datos.
-					System.out.println("--------------------------------");
-					System.out.println("     Añadir un nuevo libro      ");
-					System.out.println("--------------------------------");
-					System.out.println("Escriba los siguientes datos:");
-					System.out.print("Titulo: ");
-					String titulo = sc.next();
-					sc.nextLine();
-					System.out.print("Autor: ");
-					String autor = sc.next();
-					sc.nextLine();
-					System.out.print("Año de publicación: ");
-					int publication_year = sc.nextInt();
-					sc.nextLine();
-					
-					
-					// Transación a la base de datos. 
-					Transaction tx = session.beginTransaction();
-					Libro libro = new Libro(titulo,autor,publication_year);
-					session.save(libro);
-					tx.commit();				
-					break;	
-					
-				case 2: // 2. Insertar Lector.
-					// Solicitud de datos.
-					System.out.println("--------------------------------");
-					System.out.println("     Añadir un nuevo lector     ");
-					System.out.println("--------------------------------");
-					System.out.println("Escriba los siguientes datos:");
-					
-					System.out.print("Nombre: ");
-					String nombre = sc.next();
-					sc.nextLine();
-					System.out.println("Apellido: ");
-					String apellido = sc.next();
-					sc.nextLine();
-					System.out.println("Email: ");
-					String email = sc.next();
-					sc.nextLine();
-					System.out.println("Edad: ");
-					int edad = sc.nextInt();
-					
-					// Transación a la base de datos.
-					tx = session.beginTransaction();
-					Lector lector = new Lector();
-					lector.setNombre(nombre);
-					lector.setApellido(apellido);
-					lector.setEmail(email);
-					lector.setEdad(edad);
-					session.save(lector);
-					tx.commit();
-					break;
-					
-				case 3: // 3. Listado de Libros.
-					// Consultar y mostrar todos los libros que están registrados en la base de datos.
-					
-					System.out.println("--------------------------------");
-					System.out.println("       Listado de libros        ");
-					System.out.println("--------------------------------");
-					
-					List<Libro> libros = session.createQuery("FROM Libro", Libro.class).getResultList();
-					for (Libro li : libros) {
-						System.out.println("Titulo: "                 + li.getTitulo()           +
-										   "\n\tID: "                 + li.getIdLibro()          +
-										   "\n\tAutor: "              + li.getAutor()            +
-										   "\n\tAño de publicación: " + li.getPublication_year() +
-										   "\n\t¿Disponible?: "       + li.isDisponible()        + "\n");		
+				case 1:
+					while (opcion!=5) {
+						System.out.println("--------------------------------");
+						System.out.println("             LIBROS             ");
+						System.out.println("--------------------------------");
+						System.out.println("1. Insertar Libro.");
+						System.out.println("2. Actualizar Libro.");
+						System.out.println("3. Borrar libro.");
+						System.out.println("4. Listado de todos los libros.");
+						System.out.println("5. Volver atrás.");
+						System.out.println("--------------------------------");
+						System.out.println("selecciona una opción:");
+						opcion = sc.nextInt();
+						try {
+							switch (opcion) {
+							case 1: // Insertar Libro.
+								System.out.println("--------------------------------");					
+								System.out.println("Escriba los siguientes datos:");
+								System.out.print("Titulo: ");
+								String titulo = sc.next();
+								sc.nextLine();
+								System.out.print("Autor: ");
+								String autor = sc.next();
+								sc.nextLine();
+								System.out.print("Año de publicación: ");
+								int publication_year = sc.nextInt();
+								sc.nextLine();
+								System.out.println("--------------------------------");
+								
+								// Transación a la base de datos. 
+								tx = session.beginTransaction();
+								Libro libro = new Libro(titulo,autor,publication_year);
+								session.save(libro);
+								tx.commit();
+								
+								break;
+							case 2:
+								
+								break;
+							case 3:
+								
+								break;
+							case 4: //  Listado de todos los libros.
+								// Consultar y mostrar todos los libros que están registrados en la base de datos.
+								
+								System.out.println("--------------------------------");
+								System.out.println("       Listado de libros        ");
+								System.out.println("--------------------------------");
+								
+								List<Libro> libros = session.createQuery("FROM Libro", Libro.class).getResultList();
+								for (Libro li : libros) {
+									System.out.println("Titulo: "                 + li.getTitulo()           +
+													   "\n\tID: "                 + li.getIdLibro()          +
+													   "\n\tAutor: "              + li.getAutor()            +
+													   "\n\tAño de publicación: " + li.getPublication_year() +
+													   "\n\t¿Disponible?: "       + li.isDisponible()        + "\n");		
+								}
+								break;
+							default:
+								System.out.println("Las opciones son entre 1 y 4");
+								break;
+						}	
+						} catch (InputMismatchException e) {
+							System.out.println("Debes escribir un número");
+						}	
 					}
-					break;
-					
-				case 4: // 4. Listado de Lectores.
-					// Consultar y mostrar todos los lectores que están registrados en la base de datos.
-					
-					System.out.println("--------------------------------");
-					System.out.println("       Listado de lectores      ");
-					System.out.println("--------------------------------");
-					
-					List<Lector> lectores = session.createQuery("FROM Lector", Lector.class).getResultList();
-					for (Lector le : lectores) {
-						System.out.println("Nombre: "         + le.getNombre()   +"   " + "Apellido: "  + le.getApellido() +
-								           "\n\tID: "         + le.getIdLector() +
-								           "\n\tEmail: "      + le.getEmail()    +
-								           "\n\tEdad: "       + le.getEdad()     + "\n");		
-					}
-					break;
 				
-				case 5: // 5. Ver Libro por ID.
+				case 2:
+					while (opcion!=7) {
+						System.out.println("--------------------------------");
+						System.out.println("             LECTORES             ");
+						System.out.println("--------------------------------");
+						System.out.println("1. Insertar lector.");
+						System.out.println("2. Actualizar lector.");
+						System.out.println("3. Borrar lector.");
+						System.out.println("4. Listado de todos los lectores.");
+						System.out.println("5. Historial de prestamos por lector");
+						System.out.println("6. Libros actualmente prestados a un lector.");
+						System.out.println("7. Volver atrás.");
+						System.out.println("--------------------------------");
+						System.out.println("selecciona una opción:");
+						opcion = sc.nextInt();
+						try {
+							switch (opcion) {
+							case 1: //1. Insertar lector.
+								System.out.println("--------------------------------");				
+								System.out.println("Escriba los siguientes datos:");
+								System.out.print("Nombre: ");
+								String nombre = sc.next();
+								sc.nextLine();
+								System.out.print("Apellido: ");
+								String apellido = sc.next();
+								sc.nextLine();
+								System.out.print("Email: ");
+								String email = sc.next();
+								sc.nextLine();
+								System.out.print("Edad: ");
+								int edad = sc.nextInt();
+								System.out.println("--------------------------------");
+								
+								// Transación a la base de datos.
+								tx = session.beginTransaction();
+								Lector lector = new Lector();
+								lector.setNombre(nombre);
+								lector.setApellido(apellido);
+								lector.setEmail(email);
+								lector.setEdad(edad);
+								session.save(lector);
+								tx.commit();
+								
+								break;
+							case 2:
+								
+								break;
+							case 3:
+								
+								break;
+							case 4: // Listado de Lectores.
+								// Consultar y mostrar todos los lectores que están registrados en la base de datos.
+								
+								System.out.println("--------------------------------");
+								System.out.println("       Listado de lectores      ");
+								System.out.println("--------------------------------");
+								
+								List<Lector> lectores = session.createQuery("FROM Lector", Lector.class).getResultList();
+								for (Lector le : lectores) {
+									System.out.println("Nombre: "         + le.getNombre()   +"   " + "Apellido: "  + le.getApellido() +
+											           "\n\tID: "         + le.getIdLector() +
+											           "\n\tEmail: "      + le.getEmail()    +
+											           "\n\tEdad: "       + le.getEdad()     + "\n");		
+								}
+								
+								break;
+							default:
+								System.out.println("Las opciones son entre 1 y 7");
+								break;
+						}	
+						} catch (InputMismatchException e) {
+							System.out.println("Debes escribir un número");
+						}	
+					}
 					
-					break;
-				case 6: // 6. Ver Lector por ID.
-					
-					break;
-					
+				case 3:  // Prestamos
+					while (opcion!=4) {
+						System.out.println("--------------------------------");
+						System.out.println("           PRESTAMOS            ");
+						System.out.println("--------------------------------");
+						System.out.println("1. Realizar un prestamo.");
+						System.out.println("2. Realizar una devulución.");
+						System.out.println("3. Libros disponibles para prestamos.");
+						System.out.println("4. Volver atrás.");
+						System.out.println("--------------------------------");
+						System.out.println("selecciona una opción:");
+						opcion = sc.nextInt();
+						try {
+							switch (opcion) {
+							case 1: //1. Insertar lector.
+								System.out.println("--------------------------------");
+								//Solicitud de datos. 
+								System.out.print("ID del libro:");
+								int idLibro = sc.nextInt();
+								Libro libroPres = session.get(Libro.class, idLibro);
+								if(libroPres == null) {System.out.println("El libro con ID: " + idLibro + " no existe");}
+								
+								System.out.println("ID del lector: ");
+								int idLector = sc.nextInt();
+								Lector lectorPres = session.get(Lector.class, idLector);
+								if (lectorPres == null) { System.out.println("El lector con ID: "+ idLector + "no exite.");}
+								System.out.println("--------------------------------");
+								// Transación a la base de datos.
+								Prestamo prestamo = new Prestamo(new Date(), null, libroPres, lectorPres);
+								tx = session.beginTransaction();
+								session.save(prestamo);
+								tx.commit();
+								break;
+							case 2:
+								
+								break;
+							case 3:
+								
+								break;
+							
+							default:
+								System.out.println("Las opciones son entre 1 y 4");
+								break;
+						}	
+						} catch (InputMismatchException e) {
+							System.out.println("Debes escribir un número");
+						}	
+					}
 				default:
-					System.out.println("Las opciones son entre 1 y 7");
+					System.out.println("Las opciones son entre 1 y 4");
 				}
 				
 			} catch (InputMismatchException e) {
 				System.out.println("Debes escribir un número");
 			}
-			
 		}
-		
-
-		
-		
-		
-		
 		session.close();
 		sessionFactory.close();
 	}
-
 }

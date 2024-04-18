@@ -13,7 +13,8 @@
 		
 		<!-- Mapeos de clases --> 
 		<mapping resource="libro.hbm.xml"/>
-		<mapping resource="lector.hbm.xml"/>	
+		<mapping resource="lector.hbm.xml"/>
+		<mapping resource="prestamo.hbm.xml"/>	
 		
 	</session-factory>
 </hibernate-configuration>

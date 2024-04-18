@@ -5,7 +5,7 @@
     "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-	<class name="biblioteca.Lector" table="Lectores" catalog="db0biblioteca ">
+	<class name="biblioteca.Lector" table="Lectores" catalog="db0biblioteca">
 		<id name="idLector">
 			<column name="lector_id"/>
 			<generator class="increment"/>
