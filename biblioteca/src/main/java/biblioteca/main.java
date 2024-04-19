@@ -31,13 +31,18 @@ public class main {
 		System.out.println("CONFIGURACIÓN REALIZADA");
 		
 	// PROGRAMA PRINCIPAL.
-		int opcion = 0;
+		
 		Scanner sc = new Scanner(System.in);
 		Transaction tx = null;
-		int idLector=0;
+		int opMenuPrincipal=0;
+		int opMenuLibros=0;
+		int opMenuLectores=0;
+		int opMenuPrestamos=0;
+		int idLibro,idLector=0;
+		
 		
 	
-		while (opcion !=4) {
+		while (opMenuPrincipal !=4) {
 			System.out.println("--------------------------------");
 			System.out.println("           BIBLIOTECA           ");
 			System.out.println("--------------------------------");
@@ -47,11 +52,11 @@ public class main {
 			System.out.println("4. Salir.");
 			System.out.println("--------------------------------");
 			System.out.println("selecciona una opción:");
-			opcion = sc.nextInt();
+			opMenuPrincipal = sc.nextInt();
 			try {
-				switch (opcion) {
+				switch (opMenuPrincipal) {
 				case 1: // Libros.
-					while (opcion!=5) {
+					while (opMenuLibros !=5 ) {
 						System.out.println("--------------------------------");
 						System.out.println("             LIBROS             ");
 						System.out.println("--------------------------------");
@@ -62,9 +67,9 @@ public class main {
 						System.out.println("5. Volver atrás.");
 						System.out.println("--------------------------------");
 						System.out.println("selecciona una opción:");
-						opcion = sc.nextInt();
+						opMenuLibros = sc.nextInt();
 						try {
-							switch (opcion) {
+							switch (opMenuLibros) {
 							case 1: // Insertar Libro.
 								System.out.println("--------------------------------");					
 								System.out.println("Escriba los siguientes datos:");
@@ -94,16 +99,41 @@ public class main {
 							case 2: // Actualizar libro. 
 								System.out.println("--------------------------------");					
 								System.out.print("Introduzca el ID del libro: ");
-								int idLibro = sc.nextInt();
+								idLibro = sc.nextInt();
 								Libro libro = session.get(Libro.class, idLibro);
-														
+													
 								if (libro != null) {
+									System.out.println("--------------------------------");					
+									System.out.print("¿Qué campos desea actualizar");
+									System.out.println("1. Titulo  2. Autor  3. Año de publicación.");
+									int respuesta = sc.nextInt();
+									if (respuesta == 1) {
+										System.out.println("Escriba el nuevo titulo:");
+										String nuevoTitulo = sc.next();
+										libro.setTitulo(nuevoTitulo);
+										} else if(respuesta == 2) {
+											System.out.println("Escriba el nuevo autor:");
+											String nuevoAutor = sc.next();
+											libro.setAutor(nuevoAutor);
+											} else if (respuesta == 3) {
+												System.out.println("Escriba el nuevo año de publicación:");
+												int newYear = sc.nextInt();
+												libro.setPublication_year(newYear);
+									}
 									
+									try {
+										tx = session.beginTransaction();
+										session.update(libro);
+										tx.commit();
+										System.out.println("Los datos se ha actualizado correctamente.");
+									} catch (Exception e) {
+										tx.rollback();
+										System.err.println("Error al modificar los datos: " + e.getMessage());
+									}
 								}else {
 									System.out.println("El libro con ID: " + idLibro + " no existe");
 								}
 								break;
-								
 							case 3: // Borrar Libro
 								System.out.print("Introduzca el ID del libro:");
 								idLibro = sc.nextInt();
@@ -111,9 +141,9 @@ public class main {
 								// Transación a la base de datos. 
 								try {
 									tx = session.beginTransaction();
-									Libro libro = new Libro();
-									libro.setIdLibro(idLibro);
-									session.delete(libro);
+									Libro libro2 = new Libro();
+									libro2.setIdLibro(idLibro);
+									session.delete(libro2);
 									tx.commit();
 									
 								} catch (HibernateException e) {
@@ -121,7 +151,7 @@ public class main {
 								}
 								
 								break;
-							case 4: //  Listado de todos los libros.
+							case 4: // Listado de todos los libros.
 								// Consultar y mostrar todos los libros que están registrados en la base de datos.
 								
 								System.out.println("--------------------------------");
@@ -137,17 +167,19 @@ public class main {
 													   "\n\t¿Disponible?: "       + li.isDisponible()        + "\n");		
 								}
 								break;
+							case 5:// Volver atrás.
+								break;	
 							default:
-								System.out.println("Las opciones son entre 1 y 4");
+								System.out.println("Las opciones son entre 1 y 5");
 								break;
 						}	
 						} catch (InputMismatchException e) {
 							System.out.println("Debes escribir un número");
 						}	
 					}
-				
+					break;
 				case 2: // Lectores
-					while (opcion!=7) {
+					while (opMenuLectores !=7 ) {
 						System.out.println("--------------------------------");
 						System.out.println("             LECTORES             ");
 						System.out.println("--------------------------------");
@@ -160,9 +192,9 @@ public class main {
 						System.out.println("7. Volver atrás.");
 						System.out.println("--------------------------------");
 						System.out.println("selecciona una opción:");
-						opcion = sc.nextInt();
+						opMenuLectores = sc.nextInt();
 						try {
-							switch (opcion) {
+							switch (opMenuLectores) {
 							case 1: // Insertar lector.
 								System.out.println("--------------------------------");				
 								System.out.println("Escriba los siguientes datos:");
@@ -194,7 +226,7 @@ public class main {
 								}
 								
 								break;
-							case 2:
+							case 2: // Actualizar Lector.
 								
 								break;
 							case 3: // Borrar Lectores
@@ -230,6 +262,12 @@ public class main {
 								}
 								
 								break;
+							case 5: // Historial de prestamos por lector
+								break;
+							case 6: // Libros actualmente prestados a un lector.
+								break;
+							case 7: // Volver atrás. 
+								break;
 							default:
 								System.out.println("Las opciones son entre 1 y 7");
 								break;
@@ -238,31 +276,31 @@ public class main {
 							System.out.println("Debes escribir un número");
 						}	
 					}
-					
-				case 3:  // Prestamos
-					while (opcion!=4) {
+					break;	
+				case 3: // Prestamos
+					while (opMenuPrestamos!=4) {
 						System.out.println("--------------------------------");
 						System.out.println("           PRESTAMOS            ");
 						System.out.println("--------------------------------");
 						System.out.println("1. Realizar un prestamo.");
-						System.out.println("2. Realizar una devulución.");
+						System.out.println("2. Realizar una devolución.");
 						System.out.println("3. Libros disponibles para prestamos.");
 						System.out.println("4. Volver atrás.");
 						System.out.println("--------------------------------");
 						System.out.println("selecciona una opción:");
-						opcion = sc.nextInt();
+						opMenuPrestamos = sc.nextInt();
 						try {
-							switch (opcion) {
+							switch (opMenuPrestamos) {
 							case 1: //1. Insertar lector.
 								System.out.println("--------------------------------");
 								//Solicitud de datos. 
 								System.out.print("ID del libro:");
-								int idLibro = sc.nextInt();
+								idLibro = sc.nextInt();
 								Libro libroPres = session.get(Libro.class, idLibro);
 								if(libroPres == null) {System.out.println("El libro con ID: " + idLibro + " no existe");}
 								
 								System.out.print("ID del lector: ");
-								int idLector = sc.nextInt();
+								idLector = sc.nextInt();
 								Lector lectorPres = session.get(Lector.class, idLector);
 								if (lectorPres == null) { System.out.println("El lector con ID: "+ idLector + "no exite.");}
 								System.out.println("--------------------------------");
@@ -282,13 +320,14 @@ public class main {
 								
 								
 								break;
-							case 2:
+							case 2: // Realizar una devolución.
 								
 								break;
-							case 3:
+							case 3: // Libros disponibles para prestamos.
 								
 								break;
-							
+							case 4: // Volver atrás.
+								break;
 							default:
 								System.out.println("Las opciones son entre 1 y 4");
 								break;
@@ -297,10 +336,14 @@ public class main {
 							System.out.println("Debes escribir un número");
 						}	
 					}
+					break;
+				case 4: // Salir
+					break;
 				default:
-					System.out.println("Las opciones son entre 1 y 4");
+					System.out.println("Las opciones son entre 1 y 4FERNANDO");
+					break;
 				}
-				
+			break;	
 			} catch (InputMismatchException e) {
 				System.out.println("Debes escribir un número");
 			}
