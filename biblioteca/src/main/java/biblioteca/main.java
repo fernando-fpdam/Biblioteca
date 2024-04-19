@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.Date;
 
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -32,7 +33,9 @@ public class main {
 	// PROGRAMA PRINCIPAL.
 		int opcion = 0;
 		Scanner sc = new Scanner(System.in);
-		Transaction tx = session.beginTransaction();
+		Transaction tx = null;
+		int idLector=0;
+		
 	
 		while (opcion !=4) {
 			System.out.println("--------------------------------");
@@ -47,7 +50,7 @@ public class main {
 			opcion = sc.nextInt();
 			try {
 				switch (opcion) {
-				case 1:
+				case 1: // Libros.
 					while (opcion!=5) {
 						System.out.println("--------------------------------");
 						System.out.println("             LIBROS             ");
@@ -76,17 +79,46 @@ public class main {
 								sc.nextLine();
 								System.out.println("--------------------------------");
 								
+								// Transación a la base de datos.  
+								try {
+									tx = session.beginTransaction();
+									Libro libro = new Libro(titulo,autor,publication_year);
+									session.save(libro);
+									tx.commit();
+									
+								} catch (HibernateException e) {
+									if(tx != null) {tx.rollback(); e.printStackTrace();}
+								}
+								
+								break;
+							case 2: // Actualizar libro. 
+								System.out.println("--------------------------------");					
+								System.out.print("Introduzca el ID del libro: ");
+								int idLibro = sc.nextInt();
+								Libro libro = session.get(Libro.class, idLibro);
+														
+								if (libro != null) {
+									
+								}else {
+									System.out.println("El libro con ID: " + idLibro + " no existe");
+								}
+								break;
+								
+							case 3: // Borrar Libro
+								System.out.print("Introduzca el ID del libro:");
+								idLibro = sc.nextInt();
+								
 								// Transación a la base de datos. 
-								tx = session.beginTransaction();
-								Libro libro = new Libro(titulo,autor,publication_year);
-								session.save(libro);
-								tx.commit();
-								
-								break;
-							case 2:
-								
-								break;
-							case 3:
+								try {
+									tx = session.beginTransaction();
+									Libro libro = new Libro();
+									libro.setIdLibro(idLibro);
+									session.delete(libro);
+									tx.commit();
+									
+								} catch (HibernateException e) {
+									if (tx != null) { tx.rollback(); e.printStackTrace();}
+								}
 								
 								break;
 							case 4: //  Listado de todos los libros.
@@ -114,7 +146,7 @@ public class main {
 						}	
 					}
 				
-				case 2:
+				case 2: // Lectores
 					while (opcion!=7) {
 						System.out.println("--------------------------------");
 						System.out.println("             LECTORES             ");
@@ -131,7 +163,7 @@ public class main {
 						opcion = sc.nextInt();
 						try {
 							switch (opcion) {
-							case 1: //1. Insertar lector.
+							case 1: // Insertar lector.
 								System.out.println("--------------------------------");				
 								System.out.println("Escriba los siguientes datos:");
 								System.out.print("Nombre: ");
@@ -146,22 +178,40 @@ public class main {
 								System.out.print("Edad: ");
 								int edad = sc.nextInt();
 								System.out.println("--------------------------------");
-								
-								// Transación a la base de datos.
+
+								// Transación a la base de datos. 
 								tx = session.beginTransaction();
-								Lector lector = new Lector();
-								lector.setNombre(nombre);
-								lector.setApellido(apellido);
-								lector.setEmail(email);
-								lector.setEdad(edad);
-								session.save(lector);
-								tx.commit();
+								try {
+									Lector lector = new Lector();
+									lector.setNombre(nombre);
+									lector.setApellido(apellido);
+									lector.setEmail(email);
+									lector.setEdad(edad);
+									session.save(lector);
+									tx.commit();
+								} catch (HibernateException e) {
+									if(tx != null) {tx.rollback(); e.printStackTrace();}
+								}
 								
 								break;
 							case 2:
 								
 								break;
-							case 3:
+							case 3: // Borrar Lectores
+								System.out.println("Introduzca el ID del lector.");
+								idLector = sc.nextInt();
+								
+								// Transación a la base de datos. 
+								try {
+									tx = session.beginTransaction();
+									Lector lector = new Lector();
+									lector.setIdLector(idLector);
+									session.delete(lector);
+									tx.commit();
+									
+								} catch (HibernateException e) {
+									if (tx != null) { tx.rollback(); e.printStackTrace();}
+								}
 								
 								break;
 							case 4: // Listado de Lectores.
@@ -211,16 +261,26 @@ public class main {
 								Libro libroPres = session.get(Libro.class, idLibro);
 								if(libroPres == null) {System.out.println("El libro con ID: " + idLibro + " no existe");}
 								
-								System.out.println("ID del lector: ");
+								System.out.print("ID del lector: ");
 								int idLector = sc.nextInt();
 								Lector lectorPres = session.get(Lector.class, idLector);
 								if (lectorPres == null) { System.out.println("El lector con ID: "+ idLector + "no exite.");}
 								System.out.println("--------------------------------");
-								// Transación a la base de datos.
-								Prestamo prestamo = new Prestamo(new Date(), null, libroPres, lectorPres);
+								
+														
+								
+								// Transación a la base de datos. 
 								tx = session.beginTransaction();
-								session.save(prestamo);
-								tx.commit();
+								try {
+									Prestamo prestamo = new Prestamo(new Date(), null, libroPres, lectorPres);
+									session.save(prestamo);
+									tx.commit();
+								} catch (HibernateException e) {
+									if(tx != null) {tx.rollback(); e.printStackTrace();}
+								}
+								
+								
+								
 								break;
 							case 2:
 								

@@ -5,25 +5,25 @@ import javax.persistence.*;
 @Entity
 @Table(name = "Prestamos")
 public class Prestamo {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+// ATRIBUTOS.
+	@Id 
+	@GeneratedValue(strategy = GenerationType.TABLE)
     private int idPrestamo;
-
-    @Column(name = "fecha_prestamo")
+	
+	@Column(name = "fecha_prestamo")
     private Date fechaPrestamo;
+	
+	@Column(name = "fecha_devolucion")
+	private Date fechaDevolucion;
+    
+	@OneToMany
+	private Libro libro;
+	
+    @OneToMany
+	private Lector lector;
 
-    @Column(name = "fecha_devolucion")
-    private Date fechaDevolucion;
-
-    @ManyToOne
-    @JoinColumn(name = "libro_id")
-    private Libro libro;
-
-    @ManyToOne
-    @JoinColumn(name = "lector_id")
-    private Lector lector;
-
-   
+// CONSTRUCTORES.   
     public Prestamo() {
     }
 
