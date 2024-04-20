@@ -24,7 +24,7 @@ public class main {
 	
 	
 // METODOS LIBROS.
-	public static void menuLibro() {
+	public static void menuLibro(Session session) {
 		while (opMenuLibros !=5 ) {
 			System.out.println("--------------------------------");
 			System.out.println("             LIBROS             ");
@@ -39,18 +39,15 @@ public class main {
 			opMenuLibros = sc.nextInt();
 			try {
 				switch (opMenuLibros) {
-				case 1: // Insertar Libro.
-					insertarLibro();
+				case 1: insertarLibro(session);
 					break;
-				case 2: // Actualizar libro. 
-					actualizarLibro();
+				case 2: actualizarLibro(session);
 					break;
-				case 3: // Borrar Libro
-					eliminarLibro();
+				case 3: eliminarLibro(session);
 					
 					break;
-				case 4: // Listado de todos los libros.
-					listarTodosLibros();
+				case 4: listarTodosLibros(session);
+					break;
 				case 5:// Volver atrás.
 					break;	
 				default:
@@ -62,7 +59,7 @@ public class main {
 			}	
 		}
 	}
-	public static void insertarLibro() {
+	public static void insertarLibro(Session session) {
 		System.out.println("--------------------------------");					
 		System.out.println("Escriba los siguientes datos:");
 		System.out.print("Titulo: ");
@@ -88,7 +85,7 @@ public class main {
 		}
 		
 	}
-	public static void actualizarLibro() {
+	public static void actualizarLibro(Session session) {
 		System.out.println("--------------------------------");					
 		System.out.print("Introduzca el ID del libro: ");
 		idLibro = sc.nextInt();
@@ -126,7 +123,7 @@ public class main {
 			System.out.println("El libro con ID: " + idLibro + " no existe");
 		}
 	}
-	public static void eliminarLibro() {
+	public static void eliminarLibro(Session session) {
 		System.out.print("Introduzca el ID del libro:");
 		int idLibro = sc.nextInt();
 		
@@ -142,7 +139,7 @@ public class main {
 			if (tx != null) { tx.rollback(); e.printStackTrace();}
 		}
 	}
-	public static void listarTodosLibros() {
+	public static void listarTodosLibros(Session session) {
 		// Consultar y mostrar todos los libros que están registrados en la base de datos.
 		
 		System.out.println("--------------------------------");
@@ -156,13 +153,11 @@ public class main {
 							   "\n\tAutor: "              + li.getAutor()            +
 							   "\n\tAño de publicación: " + li.getPublication_year() +
 							   "\n\t¿Disponible?: "       + li.isDisponible()        + "\n");		
-		}
-		break;
-		
+		}	
 	}
 	
 // METODOS LECTORES. 
-	public static void menuLectores() {
+	public static void menuLectores(Session session) {
 		while (opMenuLectores !=7 ) {
 			System.out.println("--------------------------------");
 			System.out.println("             LECTORES             ");
@@ -179,13 +174,13 @@ public class main {
 			opMenuLectores = sc.nextInt();
 			try {
 				switch (opMenuLectores) {
-				case 1: insertarLector();
+				case 1: insertarLector(session);
 					break;
-				case 2: actualizarLectores();
+				case 2: actualizarLectores(session);
 					break;
-				case 3: eliminarLector();
+				case 3: eliminarLector(session);
 					break;
-				case 4: listarTodosLectores();
+				case 4: listarTodosLectores(session);
 					break;
 				case 5: // Historial de prestamos por lector
 					break;
@@ -202,7 +197,7 @@ public class main {
 			}
 		}
 	}
-	public static void insertarLector() {
+	public static void insertarLector(Session session) {
 		System.out.println("--------------------------------");				
 		System.out.println("Escriba los siguientes datos:");
 		System.out.print("Nombre: ");
@@ -232,7 +227,7 @@ public class main {
 			if(tx != null) {tx.rollback(); e.printStackTrace();}
 		}
 	}
-	public static void actualizarLectores() {
+	public static void actualizarLectores(Session session) {
 		System.out.println("--------------------------------");					
 		System.out.print("Introduzca el ID del lector: ");
 		idLector = sc.nextInt();
@@ -263,7 +258,7 @@ public class main {
 			
 			try {
 				tx = session.beginTransaction();
-				session.update(libro);
+				session.update(lector);
 				tx.commit();
 				System.out.println("Los datos se ha actualizado correctamente.");
 			} catch (Exception e) {
@@ -274,7 +269,7 @@ public class main {
 			System.out.println("El libro con ID: " + idLibro + " no existe");
 		}
 	}
-	public static void eliminarLector() {
+	public static void eliminarLector(Session session) {
 		System.out.println("Introduzca el ID del lector.");
 		idLector = sc.nextInt();
 		
@@ -290,7 +285,7 @@ public class main {
 			if (tx != null) { tx.rollback(); e.printStackTrace();}
 		}
 	}	
-	public static void listarTodosLectores() {
+	public static void listarTodosLectores(Session session) {
 		// Consultar y mostrar todos los lectores que están registrados en la base de datos.
 		
 		System.out.println("--------------------------------");
@@ -308,8 +303,7 @@ public class main {
 	
 	
 // METODOS PRESTAMOS
-	
-	public static void menuPrestamos() {
+	public static void menuPrestamos(Session session) {
 		while (opMenuPrestamos!=4) {
 			System.out.println("--------------------------------");
 			System.out.println("           PRESTAMOS            ");
@@ -323,7 +317,7 @@ public class main {
 			opMenuPrestamos = sc.nextInt();
 			try {
 				switch (opMenuPrestamos) {
-				case 1: realizarPrestamo();
+				case 1: realizarPrestamo(session);
 					break;
 				case 2: 
 					break;
@@ -339,9 +333,9 @@ public class main {
 				System.out.println("Debes escribir un número");
 			}	
 		}
-		break;
+		
 	}
-	public static void realizarPrestamo() {
+	public static void realizarPrestamo(Session session) {
 		System.out.println("--------------------------------");
 		//Solicitud de datos. 
 		System.out.print("ID del libro:");
@@ -358,6 +352,9 @@ public class main {
 		System.out.println("--------------------------------");
 		
 	}
+
+	
+ 
 	public static void main(String[] args) {
 		
 	// CONFIGURACIÓN DEL PROGRAMA
@@ -373,9 +370,9 @@ public class main {
 		
 		System.out.println("CONFIGURACIÓN REALIZADA");
 		
-	// PROGRAMA PRINCIPAL.
+	
 		
-		
+	// PROGRAMA PRINCIPAL
 		Transaction tx = null;
 		
 		while (opMenuPrincipal !=4) {
@@ -391,19 +388,19 @@ public class main {
 			opMenuPrincipal = sc.nextInt();
 			try {
 				switch (opMenuPrincipal) {
-				case 1: // Libros.
-					menuLibro();
+				case 1: menuLibro(session);
 					break;
-				case 2:menuLectores();
+				case 2: menuLectores(session);
 					break;	
-				case 3: menuPrestamos();
+				case 3: menuPrestamos(session);
+					break;
 				case 4: // Salir
 					break;
 				default:
 					System.out.println("Las opciones son entre 1 y 4FERNANDO");
 					break;
 				}
-			break;	
+				
 			} catch (InputMismatchException e) {
 				System.out.println("Debes escribir un número");
 			}
