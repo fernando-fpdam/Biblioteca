@@ -328,7 +328,7 @@ public class main {
 					break;
 				case 2: realizarDevolucion(session);
 					break;
-				case 3: 
+				case 3: librosDisponibles(session);
 					break;
 				case 4: // Volver atrás.
 					break;
@@ -397,6 +397,30 @@ public class main {
 		}else {
 			System.out.println("El libro con ID: " + idLibro + " no existe");
 		}
+	}
+	private static void librosDisponibles(Session session) {
+		try {
+			tx = session.beginTransaction();
+			List libros = session.createQuery("FROM Libro e WHERE e.disponible=1").list();
+			System.out.println("Libros Disponibles");
+			System.out.println("--------------------------------");
+			for (Iterator iterator = libros.iterator(); iterator.hasNext();) {
+				Libro libro = (Libro) iterator.next();
+				
+				
+				System.out.println("Titulo: "                 + libro.getTitulo()           +
+								   "\n\tID: "                 + libro.getIdLibro()          +
+								   "\n\tAutor: "              + libro.getAutor()            +
+								   "\n\tAño de publicación: " + libro.getPublication_year() );
+									
+			}
+			System.out.println("--------------------------------");
+			tx.commit();
+		} catch (HibernateException e) {
+			if(tx != null) {tx.rollback(); e.printStackTrace();}
+		}
+		
+		
 	}
 	private static Date Date() {
 		return null;
