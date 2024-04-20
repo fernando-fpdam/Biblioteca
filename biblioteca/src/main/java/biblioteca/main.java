@@ -16,15 +16,15 @@ import org.hibernate.Transaction;
 
 
 public class main {
-	public static Scanner sc = new Scanner(System.in);
-	public static Transaction tx = null;
-	public static int idLibro,idLector=0;
-	public static int opMenuPrincipal,opMenuLibros,opMenuLectores,opMenuPrestamos=0;
+	private static Scanner sc = new Scanner(System.in);
+	private static Transaction tx = null;
+	private static int idLibro,idLector, idPrestamo=0;
+	private static int opMenuPrincipal,opMenuLibros,opMenuLectores,opMenuPrestamos=0;
 	
 	
 	
 // METODOS LIBROS.
-	public static void menuLibro(Session session) {
+	private static void menuLibro(Session session) {
 		while (opMenuLibros !=5 ) {
 			System.out.println("--------------------------------");
 			System.out.println("             LIBROS             ");
@@ -58,7 +58,7 @@ public class main {
 			}	
 		}
 	}
-	public static void insertarLibro(Session session) {
+	private static void insertarLibro(Session session) {
 		System.out.println("--------------------------------");					
 		System.out.println("Escriba los siguientes datos:");
 		System.out.print("Titulo: ");
@@ -84,45 +84,48 @@ public class main {
 		}
 		
 	}
-	public static void actualizarLibro(Session session) {
+	private static void actualizarLibro(Session session) {
 		System.out.println("--------------------------------");					
 		System.out.print("Introduzca el ID del libro: ");
 		idLibro = sc.nextInt();
 		Libro libro = session.get(Libro.class, idLibro);
 							
 		if (libro != null) {
-			System.out.println("--------------------------------");					
-			System.out.print("¿Qué campos desea actualizar");
-			System.out.println("1. Titulo  2. Autor  3. Año de publicación.");
-			int respuesta = sc.nextInt();
-			if (respuesta == 1) {
-				System.out.println("Escriba el nuevo titulo:");
-				String nuevoTitulo = sc.next();
-				libro.setTitulo(nuevoTitulo);
-				} else if(respuesta == 2) {
+			try {
+				tx = session.beginTransaction();
+				System.out.println("--------------------------------");					
+				System.out.print("¿Qué campos desea actualizar");
+				System.out.println("1. Titulo  2. Autor  3. Año de publicación.");
+				int respuesta = sc.nextInt();
+				switch (respuesta) {
+				case 1:
+					System.out.println("Escriba el nuevo titulo:");
+					String nuevoTitulo = sc.next();
+					libro.setTitulo(nuevoTitulo);
+					break;
+				case 2:
 					System.out.println("Escriba el nuevo autor:");
 					String nuevoAutor = sc.next();
 					libro.setAutor(nuevoAutor);
-					} else if (respuesta == 3) {
-						System.out.println("Escriba el nuevo año de publicación:");
-						int newYear = sc.nextInt();
-						libro.setPublication_year(newYear);
-			}
-			
-			try {
-				tx = session.beginTransaction();
+					break;
+				case 3:
+					System.out.println("Escriba el nuevo año de publicación:");
+					int newYear = sc.nextInt();
+					libro.setPublication_year(newYear);
+					break;
+				}
 				session.update(libro);
 				tx.commit();
 				System.out.println("Los datos se ha actualizado correctamente.");
-			} catch (Exception e) {
+			} catch (HibernateException e) {
 				tx.rollback();
-				System.err.println("Error al modificar los datos: " + e.getMessage());
+				e.printStackTrace();
 			}
 		}else {
 			System.out.println("El libro con ID: " + idLibro + " no existe");
 		}
 	}
-	public static void eliminarLibro(Session session) {
+	private static void eliminarLibro(Session session) {
 		System.out.print("Introduzca el ID del libro:");
 		int idLibro = sc.nextInt();
 		
@@ -138,7 +141,7 @@ public class main {
 			if (tx != null) { tx.rollback(); e.printStackTrace();}
 		}
 	}
-	public static void listarTodosLibros(Session session) {
+	private static void listarTodosLibros(Session session) {
 		// Consultar y mostrar todos los libros que están registrados en la base de datos.
 		
 		System.out.println("--------------------------------");
@@ -156,7 +159,7 @@ public class main {
 	}
 	
 // METODOS LECTORES. 
-	public static void menuLectores(Session session) {
+	private static void menuLectores(Session session) {
 		while (opMenuLectores !=7 ) {
 			System.out.println("--------------------------------");
 			System.out.println("             LECTORES             ");
@@ -196,7 +199,7 @@ public class main {
 			}
 		}
 	}
-	public static void insertarLector(Session session) {
+	private static void insertarLector(Session session) {
 		System.out.println("--------------------------------");				
 		System.out.println("Escriba los siguientes datos:");
 		System.out.print("Nombre: ");
@@ -226,49 +229,54 @@ public class main {
 			if(tx != null) {tx.rollback(); e.printStackTrace();}
 		}
 	}
-	public static void actualizarLectores(Session session) {
+	private static void actualizarLectores(Session session) {
+
 		System.out.println("--------------------------------");					
 		System.out.print("Introduzca el ID del lector: ");
 		idLector = sc.nextInt();
 		Lector lector = session.get(Lector.class, idLector);
-							
+					
 		if (lector != null) {
-			System.out.println("--------------------------------");					
-			System.out.print("¿Qué campos desea actualizar");
-			System.out.println("1. Nombre  2. Apellido  3. Email 4. Edad");
-			int respuesta = sc.nextInt();
-			if (respuesta == 1) {
-				System.out.println("Escriba el nuevo nombre:");
-				String nuevoNombre = sc.next();
-				lector.setNombre(nuevoNombre);
-				} else if(respuesta == 2) {
-					System.out.println("Escriba el nuevo Email:");
+			try {
+				System.out.println("--------------------------------");					
+				System.out.print("¿Qué campos desea actualizar");
+				System.out.println("1. Nombre  2. Apellido  3. Email 4. Edad");
+				int respuesta = sc.nextInt();
+				switch (respuesta) {
+				case 1:
+					System.out.println("Escriba el nuevo nombre:");
+					String nuevoNombre = sc.next();
+					lector.setNombre(nuevoNombre);
+					break;
+				case 2:
+					System.out.println("Escriba el nuevo apellido:");
 					String nuevoApellido = sc.next();
 					lector.setApellido(nuevoApellido);
-					} else if(respuesta == 3) {
-						System.out.println("Escriba el nuevo Email:");
-						String nuevoEmail = sc.next();
-						lector.setEmail(nuevoEmail);
-						}else if(respuesta == 4) {
-								System.out.println("Escriba la edad:");
-								int edadActualizada = sc.nextInt();
-								lector.setEdad(edadActualizada);
-			}
-			
-			try {
-				tx = session.beginTransaction();
+					break;
+				case 3:
+					System.out.println("Escriba el nuevo Email:");
+					String nuevoEmail = sc.next();
+					lector.setEmail(nuevoEmail);
+					break;
+				case 4:
+					System.out.println("Escriba la edad:");
+					int edadActualizada = sc.nextInt();
+					lector.setEdad(edadActualizada);
+					break;
+				}
 				session.update(lector);
 				tx.commit();
 				System.out.println("Los datos se ha actualizado correctamente.");
-			} catch (Exception e) {
+			} catch (HibernateException e) {
 				tx.rollback();
-				System.err.println("Error al modificar los datos: " + e.getMessage());
+				e.printStackTrace();
 			}
 		}else {
 			System.out.println("El libro con ID: " + idLibro + " no existe");
 		}
+
 	}
-	public static void eliminarLector(Session session) {
+	private static void eliminarLector(Session session) {
 		System.out.println("Introduzca el ID del lector.");
 		idLector = sc.nextInt();
 		
@@ -284,7 +292,7 @@ public class main {
 			if (tx != null) { tx.rollback(); e.printStackTrace();}
 		}
 	}	
-	public static void listarTodosLectores(Session session) {
+	private static void listarTodosLectores(Session session) {
 		// Consultar y mostrar todos los lectores que están registrados en la base de datos.
 		
 		System.out.println("--------------------------------");
@@ -302,7 +310,7 @@ public class main {
 	
 	
 // METODOS PRESTAMOS
-	public static void menuPrestamos(Session session) {
+	private static void menuPrestamos(Session session) {
 		while (opMenuPrestamos!=4) {
 			System.out.println("--------------------------------");
 			System.out.println("           PRESTAMOS            ");
@@ -318,7 +326,7 @@ public class main {
 				switch (opMenuPrestamos) {
 				case 1: realizarPrestamo(session);
 					break;
-				case 2: 
+				case 2: realizarDevolucion(session);
 					break;
 				case 3: 
 					break;
@@ -334,7 +342,7 @@ public class main {
 		}
 		
 	}
-	public static void realizarPrestamo(Session session) {
+	private static void realizarPrestamo(Session session) {
 		System.out.println("--------------------------------");
 		//Solicitud de datos. 
 		System.out.print("ID del libro:");
@@ -362,9 +370,38 @@ public class main {
 		}
 		
 	}
-
+	private static void realizarDevolucion(Session session) {
+		
+		System.out.println("--------------------------------");					
+		System.out.print("Introduzca el ID del libro: ");
+		idLibro = sc.nextInt();
+		Prestamo prestamo = session.get(Prestamo.class, idLibro);
+		
+		
+		if (prestamo != null) {
+			try {
+				prestamo.setFechaDevolucion(new Date());
+				
+				tx = session.beginTransaction();
+				session.update(prestamo);
+				
+				prestamo.getLibro().setDisponible(true);
+				session.update(prestamo.getLibro());
+				
+				tx.commit();
+				System.out.println("Los datos se ha actualizado correctamente.");
+			} catch (HibernateException e) {
+				tx.rollback();
+				e.printStackTrace();
+			}
+		}else {
+			System.out.println("El libro con ID: " + idLibro + " no existe");
+		}
+	}
+	private static Date Date() {
+		return null;
+	}
 	
- 
 	public static void main(String[] args) {
 		
 	// CONFIGURACIÓN DEL PROGRAMA
