@@ -44,7 +44,6 @@ public class main {
 				case 2: actualizarLibro(session);
 					break;
 				case 3: eliminarLibro(session);
-					
 					break;
 				case 4: listarTodosLibros(session);
 					break;
@@ -339,17 +338,28 @@ public class main {
 		System.out.println("--------------------------------");
 		//Solicitud de datos. 
 		System.out.print("ID del libro:");
-		int idLibro = sc.nextInt();
 		idLibro = sc.nextInt();
 		Libro libroPres = session.get(Libro.class, idLibro);
+		libroPres.setDisponible(false); // Indicamos que el libro no está disponible.
 		if(libroPres == null) {System.out.println("El libro con ID: " + idLibro + " no existe");}
 		
 		System.out.print("ID del lector: ");
-		int idLector = sc.nextInt();
 		idLector = sc.nextInt();
 		Lector lectorPres = session.get(Lector.class, idLector);
 		if (lectorPres == null) { System.out.println("El lector con ID: "+ idLector + "no exite.");}
 		System.out.println("--------------------------------");
+		
+								
+		
+		// Transación a la base de datos. 
+		tx = session.beginTransaction();
+		try {
+			Prestamo prestamo = new Prestamo(new Date(), null, libroPres, lectorPres);
+			session.save(prestamo);
+			tx.commit();
+		} catch (HibernateException e) {
+			if(tx != null) {tx.rollback(); e.printStackTrace();}
+		}
 		
 	}
 
