@@ -354,7 +354,7 @@ public class main {
 		System.out.print("ID del lector: ");
 		idLector = sc.nextInt();
 		Lector lectorPres = session.get(Lector.class, idLector);
-		if (lectorPres == null) { System.out.println("El lector con ID: "+ idLector + "no exite.");}
+		if (lectorPres == null) { System.out.println("El lector con ID: "+ idLector + "no existe.");}
 		System.out.println("--------------------------------");
 		
 								
@@ -429,7 +429,7 @@ public class main {
 	public static void main(String[] args) {
 		
 	// CONFIGURACIÓN DEL PROGRAMA
-		System.out.println("INICO DEL PROGRAMA...");
+		System.out.println("INICIO DEL PROGRAMA...");
 		// Para indicar que queremos usar Hibernate definimos las interfaces.
 		
 		Configuration cfg = new Configuration().configure();
@@ -468,7 +468,7 @@ public class main {
 				case 4: // Salir
 					break;
 				default:
-					System.out.println("Las opciones son entre 1 y 4FERNANDO");
+					System.out.println("Las opciones son entre 1 y 4");
 					break;
 				}
 				
