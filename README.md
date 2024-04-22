@@ -10,13 +10,5 @@ Para poder usar esta herramienta, debemos tener instalado:
     - ECLIPSE O VScode para poder ejecutar la aplicación. 
 
 
-### 
-
---------------------------------
-           BIBLIOTECA           
---------------------------------
-1. Libros.
-2. Lectores.
-3. Prestamos.
-4. Salir.
---------------------------------
+### Apariencia
+![menu1](https://github.com/fernando-fpdam/Biblioteca/blob/Final/menu1.png?raw=true)
