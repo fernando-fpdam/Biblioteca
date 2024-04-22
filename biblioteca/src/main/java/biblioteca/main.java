@@ -184,7 +184,7 @@ public class main {
 					break;
 				case 4: listarTodosLectores(session);
 					break;
-				case 5: // Historial de prestamos por lector
+				case 5: // Historias de préstamos por lector
 					break;
 				case 6: // Libros actualmente prestados a un lector.
 					break;
@@ -307,7 +307,7 @@ public class main {
 					           "\n\tEdad: "       + le.getEdad()     + "\n");		
 		}
 	}
-	
+
 	
 // METODOS PRESTAMOS
 	private static void menuPrestamos(Session session) {
@@ -362,6 +362,7 @@ public class main {
 		// Transación a la base de datos. 
 		tx = session.beginTransaction();
 		try {
+			// Crear un nuevo préstamo con la fecha actual y sin fecha de devolución.
 			Prestamo prestamo = new Prestamo(new Date(), null, libroPres, lectorPres);
 			session.save(prestamo);
 			tx.commit();
@@ -380,14 +381,17 @@ public class main {
 		
 		if (prestamo != null) {
 			try {
+				// Marcar el préstamo como devuelto y actualizar en la base de datos
 				prestamo.setFechaDevolucion(new Date());
-				
 				tx = session.beginTransaction();
 				session.update(prestamo);
+				tx.commit();
 				
-				prestamo.getLibro().setDisponible(true);
+				// Actualizar el estado de disponibilidad del libro asociado
+				Libro libro = prestamo.getLibro();
+				libro.setDisponible(true);
+				tx = session.beginTransaction();
 				session.update(prestamo.getLibro());
-				
 				tx.commit();
 				System.out.println("Los datos se ha actualizado correctamente.");
 			} catch (HibernateException e) {
