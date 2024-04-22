@@ -11,4 +11,4 @@ Para poder usar esta herramienta, debemos tener instalado:
 
 
 ### 
-![[menu1.php]]
+![[menu1.png]]
