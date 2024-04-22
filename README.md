@@ -5,7 +5,10 @@ Como mecionado anteriormente, la aplicación esta desarrollada en java utilizand
 
 ## Instalación
 Para poder usar esta herramienta, debemos tener instalado:
+
     - XAMPP que nos permitirá realizar la gestión a la base de datos MySQL. 
     - ECLIPSE O VScode para poder ejecutar la aplicación. 
 
+
+### 
 
