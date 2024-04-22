@@ -12,3 +12,11 @@ Para poder usar esta herramienta, debemos tener instalado:
 
 ### 
 
+--------------------------------
+           BIBLIOTECA           
+--------------------------------
+1. Libros.
+2. Lectores.
+3. Prestamos.
+4. Salir.
+--------------------------------
