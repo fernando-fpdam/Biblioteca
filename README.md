@@ -11,4 +11,8 @@ Para poder usar esta herramienta, debemos tener instalado:
 
 
 ### Apariencia
+
 ![menu1](https://github.com/fernando-fpdam/Biblioteca/blob/Final/menu1.png?raw=true)
+![menuLibros](https://github.com/fernando-fpdam/Biblioteca/blob/Final/menuLibros.png)
+![menuLectores](https://github.com/fernando-fpdam/Biblioteca/blob/Final/menuLectores.png)
+![menuPrestamos](https://github.com/fernando-fpdam/Biblioteca/blob/Final/menuPrestamos.png)
