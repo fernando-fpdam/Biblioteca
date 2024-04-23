@@ -184,7 +184,7 @@ public class main {
 					break;
 				case 4: listarTodosLectores(session);
 					break;
-				case 5: // Historias de préstamos por lector
+				case 5: // Historial de préstamos por lector
 					break;
 				case 6: // Libros actualmente prestados a un lector.
 					break;
