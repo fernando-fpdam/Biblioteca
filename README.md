@@ -7,7 +7,9 @@ Como mencionado anteriormente, la aplicación esta desarrollada en java utilizan
 ## Instalación
 Para poder usar esta herramienta, debemos tener instalado:
 
-    - XAMPP que nos permitirá realizar la gestión a la base de datos MySQL. Una vez este configurado, deberá crearse una base de datos vacia con el nombre por defecto db0biblioteca.
+    - XAMPP que nos permitirá realizar la gestión a la base de datos MySQL.
+        Una vez este configurado, deberá crearse una base de datos vacía con el nombre db0biblioteca.
+        Nota: Si fuera necesario establecer otro nombre para la base de datos, deberá indicarlo también en el fichero de configuración hibernate.cfg.xml
         
     - ECLIPSE O VScode para poder ejecutar la aplicación. 
 
