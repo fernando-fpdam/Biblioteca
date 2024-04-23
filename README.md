@@ -7,8 +7,10 @@ Como mencionado anteriormente, la aplicación esta desarrollada en java utilizan
 ## Instalación
 Para poder usar esta herramienta, debemos tener instalado:
 
-    - XAMPP que nos permitirá realizar la gestión a la base de datos MySQL. 
+    - XAMPP que nos permitirá realizar la gestión a la base de datos MySQL. Una vez este configurado, deberá crearse una base de datos vacia con el nombre por defecto      db0biblioteca.
+        
     - ECLIPSE O VScode para poder ejecutar la aplicación. 
+
 
 
 ### Apariencia
